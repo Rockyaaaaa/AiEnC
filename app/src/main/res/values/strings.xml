@@ -1,0 +1,29 @@
+<resources>
+  <string name="app_name">AiEnC</string>
+  <string name="title_home">Home</string>
+  <string name="title_dashboard">Dashboard</string>
+  <string name="title_notifications">Notifications</string>
+
+  <string-array name="unit_type">
+    <item>Length</item>
+    <item>Area</item>
+    <item>Pressure</item>
+    <item>Flow</item>
+    <item>Temperature</item>
+  </string-array>
+
+  <string-array name="length_unit_type">
+    <item>meter</item>
+    <item>inch</item>
+    <item>millimeter</item>
+    <item>feet</item>
+    <item>kilometer</item>
+  </string-array>
+
+  <string-array name="pressure_unit_type">
+    <item>pascal</item>
+    <item>psig</item>
+    <item>kilopasacl</item>
+  </string-array>
+
+</resources>

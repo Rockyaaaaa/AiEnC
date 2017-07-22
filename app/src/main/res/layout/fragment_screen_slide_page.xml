@@ -1,0 +1,50 @@
+<!-- fragment_screen_slide_page.xml -->
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+  <TextView
+      android:text="输入数字："
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/hint" />
+
+
+  <Spinner
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/unit_type_spinner"
+      android:layout_below="@+id/hint" />
+
+  <Spinner
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/unit_spinner"
+      android:layout_alignTop="@+id/unit_type_spinner"
+      android:layout_toRightOf="@+id/unit_type_spinner" />
+
+
+  <EditText
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/originalNum"
+      android:layout_below="@+id/unit_type_spinner"
+      android:ems="10"
+      android:imeOptions="normal"
+      android:inputType="numberDecimal" />
+
+  <TextView
+      android:text="单位转换"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/convertedNum"
+      android:layout_below="@+id/originalNum" />
+
+
+</RelativeLayout>
+
+
