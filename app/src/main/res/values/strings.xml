@@ -1,29 +1,46 @@
 <resources>
-  <string name="app_name">AiEnC</string>
-  <string name="title_home">Home</string>
-  <string name="title_dashboard">Dashboard</string>
-  <string name="title_notifications">Notifications</string>
+    <string name="app_name">AiEnC</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 
-  <string-array name="unit_type">
-    <item>Length</item>
-    <item>Area</item>
-    <item>Pressure</item>
-    <item>Flow</item>
-    <item>Temperature</item>
-  </string-array>
+    <string-array name="unit_type">
+        <item>Length</item>
+        <item>Area</item>
+        <item>Pressure</item>
+        <item>Flow</item>
+        <item>Temperature</item>
+    </string-array>
 
-  <string-array name="length_unit_type">
-    <item>meter</item>
-    <item>inch</item>
-    <item>millimeter</item>
-    <item>feet</item>
-    <item>kilometer</item>
-  </string-array>
+    <string-array name="length_unit_type">
+        <item>meter</item>
+        <item>inch</item>
+        <item>millimeter</item>
+        <item>feet</item>
+        <item>kilometer</item>
+    </string-array>
 
-  <string-array name="pressure_unit_type">
-    <item>pascal</item>
-    <item>psig</item>
-    <item>kilopasacl</item>
-  </string-array>
+    <string-array name="pressure_unit_type">
+        <item>pascal</item>
+        <item>psig</item>
+        <item>kilopasacl</item>
+    </string-array>
+
+    <string-array name="area_unit_type">
+        <item>square meter</item>
+        <item>square kilometer</item>
+        <item>square centimeter</item>
+    </string-array>
+
+    <string-array name="flow_unit_type">
+        <item>cubic meter per second</item>
+        <item>cubic meter per minute</item>
+        <item>liter per hour</item>
+    </string-array>
+
+    <string-array name="temperature_unit_type">
+        <item>Celsius</item>
+        <item>Fahrenheit</item>
+    </string-array>
 
 </resources>
