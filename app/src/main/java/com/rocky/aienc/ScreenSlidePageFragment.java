@@ -1,7 +1,5 @@
 package com.rocky.aienc;
 
-
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,8 +23,12 @@ public class ScreenSlidePageFragment extends Fragment {
 
     private EditText originalNum;
     private ListView convertedNum;
-    ArrayAdapter<CharSequence> unitAdapter;
-    Spinner unitSpinner;
+
+    private ArrayAdapter<CharSequence> unitTypeAdapter;
+    private ArrayAdapter<CharSequence> unitAdapter;
+    private Spinner unitTypeSpinner;
+    private Spinner unitSpinner;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,22 +38,21 @@ public class ScreenSlidePageFragment extends Fragment {
                 R.layout.fragment_screen_slide_page, container, false);
         originalNum = (EditText) rootView.findViewById(R.id.originalNum);
         convertedNum = (ListView) rootView.findViewById(R.id.convertedNum);
+        unitTypeSpinner = (Spinner) rootView.findViewById(R.id.unit_type_spinner);
+        unitSpinner = (Spinner) rootView.findViewById(R.id.unit_spinner);
 
-        Spinner unitTypeSpinner = (Spinner) rootView.findViewById(R.id.unit_type_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> unitTypeAdapter = ArrayAdapter.createFromResource(this.getContext(),
+        unitTypeAdapter = ArrayAdapter.createFromResource(this.getContext(),
                 R.array.unit_type, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         unitTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         unitTypeSpinner.setAdapter(unitTypeAdapter);
 
-        unitSpinner = (Spinner) rootView.findViewById(R.id.unit_spinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
         setUnitAdapter(R.array.length_unit_type);
 
         final ArrayAdapter<String> convertNumAdapter = new ArrayAdapter<>(getContext(),
-                android.R.layout.simple_expandable_list_item_1, getData());
+                android.R.layout.simple_list_item_1, getData());
         convertedNum.setAdapter(convertNumAdapter);
 
 
@@ -103,9 +104,7 @@ public class ScreenSlidePageFragment extends Fragment {
     public void setUnitAdapter(int i) {
         unitAdapter = ArrayAdapter.createFromResource(this.getContext(),
                 i, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
         unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
         unitSpinner.setAdapter(unitAdapter);
     }
 
