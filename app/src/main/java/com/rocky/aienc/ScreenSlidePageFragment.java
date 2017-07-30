@@ -16,6 +16,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.rocky.aienc.models.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,7 +110,14 @@ public class ScreenSlidePageFragment extends Fragment {
         unitSpinner.setAdapter(unitAdapter);
     }
 
-    private List<String> getData(){
+    private List<String> getData(int id){
+        Unit currentUnit;
+        Conversion c = Conversions.getInstance().getById(Conversion.LENGTH);
+        for (Unit unit : c.getUnits()) {
+            if (unit.getId() == id) {
+                currentUnit = unit;
+            }
+        }
 
         List<String> data = new ArrayList<>();
         data.add("测试数据1");
