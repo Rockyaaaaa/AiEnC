@@ -4,14 +4,16 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 
+
     <string-array name="unit_type">
         <item>Length</item>
         <item>Area</item>
         <item>Pressure</item>
-        <item>Flow</item>
+        <item>Volume</item>
         <item>Temperature</item>
     </string-array>
 
+    <!--
     <string-array name="length_unit_type">
         <item>meter</item>
         <item>inch</item>
@@ -42,6 +44,7 @@
         <item>Celsius</item>
         <item>Fahrenheit</item>
     </string-array>
+    -->
 
     <!-- Conversions -->
     <string name="area">Area</string>

@@ -2,6 +2,7 @@ package com.rocky.aienc;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -27,7 +28,6 @@ public class ScreenSlidePageFragment extends Fragment {
     private ListView convertedNum;
 
     private ArrayAdapter<CharSequence> unitTypeAdapter;
-    private ArrayAdapter<CharSequence> unitAdapter;
     private Spinner unitTypeSpinner;
     private Spinner unitSpinner;
 
@@ -44,6 +44,7 @@ public class ScreenSlidePageFragment extends Fragment {
         unitSpinner = (Spinner) rootView.findViewById(R.id.unit_spinner);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
+
         unitTypeAdapter = ArrayAdapter.createFromResource(this.getContext(),
                 R.array.unit_type, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
@@ -51,12 +52,7 @@ public class ScreenSlidePageFragment extends Fragment {
         // Apply the adapter to the spinner
         unitTypeSpinner.setAdapter(unitTypeAdapter);
 
-        setUnitAdapter(R.array.length_unit_type);
-
-        final ArrayAdapter<String> convertNumAdapter = new ArrayAdapter<>(getContext(),
-                android.R.layout.simple_list_item_1, getData());
-        convertedNum.setAdapter(convertNumAdapter);
-
+        setUnitAdapter(Conversions.getInstance().getById(Conversion.LENGTH));
 
         originalNum.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -74,57 +70,83 @@ public class ScreenSlidePageFragment extends Fragment {
         unitTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        setUnitAdapter(R.array.length_unit_type);
-                        break;
-                    case 1:
-                        setUnitAdapter(R.array.area_unit_type);
-                        break;
-                    case 2:
-                        setUnitAdapter(R.array.pressure_unit_type);
-                        break;
-                    case 3:
-                        setUnitAdapter(R.array.flow_unit_type);
-                        break;
-                    case 4:
-                        setUnitAdapter(R.array.temperature_unit_type);
-                    default:
-                        break;
-                }
+                setUnitAdapter(Conversions.getInstance().getById(getConversionFromSpinner(position)));
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
+
+        unitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Conversion s = Conversions.getInstance().getById(getConversionFromSpinner
+                        (unitTypeSpinner.getSelectedItemPosition()));
+                convert(parent.getAdapter().getItem(position).toString(), s);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         return rootView;
     }
 
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+    }
 
-    public void setUnitAdapter(int i) {
-        unitAdapter = ArrayAdapter.createFromResource(this.getContext(),
-                i, android.R.layout.simple_spinner_item);
+    @Conversion.id
+    private int getConversionFromSpinner(int pos) {
+        switch (pos) {
+            case 0:
+                return Conversion.LENGTH;
+
+            case 1:
+                return Conversion.AREA;
+
+            case 2:
+                return Conversion.PRESSURE;
+
+            case 3:
+                return Conversion.VOLUME;
+
+            case 4:
+                return Conversion.TEMPERATURE;
+        }
+        return Conversion.AREA;
+    }
+
+    public void setUnitAdapter(Conversion c) {
+        List<String> unitString = new ArrayList<>();
+        for (int i = 0; i < c.getUnits().size(); i++) {
+            Unit u = c.getUnits().get(i);
+            unitString.add(getString(u.getLabelResource()));
+        }
+        ArrayAdapter<String>unitAdapter = new ArrayAdapter<>(this.getContext(),
+                android.R.layout.simple_spinner_item, unitString);
         unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         unitSpinner.setAdapter(unitAdapter);
     }
 
-    private List<String> getData(int id){
-        Unit currentUnit;
-        Conversion c = Conversions.getInstance().getById(Conversion.LENGTH);
+    private void convert(String unitSelected, Conversion c){
+        List<String> data = new ArrayList<>();
+        //Unit currentUnit;
         for (Unit unit : c.getUnits()) {
-            if (unit.getId() == id) {
+        /*    if (unit.getId() == id) {
                 currentUnit = unit;
-            }
+            }*/
+            String s = getString(unit.getLabelResource());
+            if (!s.equals(unitSelected))
+                data.add(getString(unit.getLabelResource()));
         }
 
-        List<String> data = new ArrayList<>();
-        data.add("测试数据1");
-        data.add("测试数据2");
-        data.add("测试数据3");
-        data.add("测试数据4");
-
-        return data;
+        data.add(String.valueOf(unitSelected));
+        final ArrayAdapter<String> convertNumAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_list_item_1, data);
+        convertedNum.setAdapter(convertNumAdapter);
     }
 }
