@@ -26,10 +26,13 @@ public class ScreenSlidePageFragment extends Fragment {
 
     private EditText originalNum;
     private ListView convertedNum;
-
-    private ArrayAdapter<CharSequence> unitTypeAdapter;
     private Spinner unitTypeSpinner;
     private Spinner unitSpinner;
+    private ArrayAdapter<CharSequence> unitTypeAdapter;
+    private ArrayAdapter<String> unitAdapter;
+    private List<String> unitAdapterData = new ArrayList<>();
+    private ArrayAdapter<String> convertNumAdapter;
+    private List<String> convertNumAdapterData = new ArrayList<>();
 
 
     @Override
@@ -52,7 +55,15 @@ public class ScreenSlidePageFragment extends Fragment {
         // Apply the adapter to the spinner
         unitTypeSpinner.setAdapter(unitTypeAdapter);
 
+        unitAdapter = new ArrayAdapter<>(this.getContext(),
+                android.R.layout.simple_spinner_item, unitAdapterData);
+        unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        unitSpinner.setAdapter(unitAdapter);
         setUnitAdapter(Conversions.getInstance().getById(Conversion.LENGTH));
+
+        convertNumAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_list_item_1, convertNumAdapterData);
+        convertedNum.setAdapter(convertNumAdapter);
 
         originalNum.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -70,7 +81,10 @@ public class ScreenSlidePageFragment extends Fragment {
         unitTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                setUnitAdapter(Conversions.getInstance().getById(getConversionFromSpinner(position)));
+                Conversion s = Conversions.getInstance().getById(getConversionFromSpinner
+                        (unitTypeSpinner.getSelectedItemPosition()));
+                setUnitAdapter(s);
+                convert(unitAdapter.getItem(0).toString(), s);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -121,32 +135,29 @@ public class ScreenSlidePageFragment extends Fragment {
     }
 
     public void setUnitAdapter(Conversion c) {
-        List<String> unitString = new ArrayList<>();
+        unitAdapterData.removeAll(unitAdapterData);
         for (int i = 0; i < c.getUnits().size(); i++) {
             Unit u = c.getUnits().get(i);
-            unitString.add(getString(u.getLabelResource()));
+            unitAdapterData.add(getString(u.getLabelResource()));
         }
-        ArrayAdapter<String>unitAdapter = new ArrayAdapter<>(this.getContext(),
-                android.R.layout.simple_spinner_item, unitString);
-        unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        unitSpinner.setAdapter(unitAdapter);
+        unitAdapter.notifyDataSetChanged();
     }
 
     private void convert(String unitSelected, Conversion c){
-        List<String> data = new ArrayList<>();
-        //Unit currentUnit;
+
+        convertNumAdapterData.removeAll(convertNumAdapterData);
+        Unit currentUnit = null;
         for (Unit unit : c.getUnits()) {
-        /*    if (unit.getId() == id) {
+            if (getString(unit.getLabelResource()).equals(unitSelected)) {
                 currentUnit = unit;
-            }*/
+            }
             String s = getString(unit.getLabelResource());
             if (!s.equals(unitSelected))
-                data.add(getString(unit.getLabelResource()));
+                convertNumAdapterData.add(getString(unit.getLabelResource()));
         }
 
-        data.add(String.valueOf(unitSelected));
-        final ArrayAdapter<String> convertNumAdapter = new ArrayAdapter<>(getContext(),
-                android.R.layout.simple_list_item_1, data);
-        convertedNum.setAdapter(convertNumAdapter);
+        if (currentUnit!=null) convertNumAdapterData.add(getString(currentUnit.getLabelResource()));
+        convertNumAdapter.notifyDataSetChanged();
+
     }
 }
